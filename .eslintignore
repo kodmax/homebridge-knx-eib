@@ -1,0 +1,4 @@
+dist
+bin
+jest.config.js
+.eslintrc.js

@@ -1,0 +1,51 @@
+{
+    "pluginAlias": "KNX Bridge",
+    "pluginType": "platform",
+    "singular": false,
+    "headerDisplay": "Optional content to display above the plugin config. Supports markdown.",
+    "footerDisplay": "Optional content to display below the plugin config. Supports markdown.",
+    "schema": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "title": "Name",
+                "type": "string",
+                "required": false
+            },
+            "knxIpGatewayIp": {
+                "title": "KNX/IP Gateway IP",
+                "type": "string",
+                "required": true
+            },
+            "groups": {
+                "title": "KNX Groups",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "title": "Name",
+                            "type": "string",
+                            "required": true
+                        },
+                        "address": {
+                            "title": "Address",
+                            "type": "string",
+                            "required": true,
+                            "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
+                        },
+                        "datapoint type": {
+                            "title": "Datapoint Type",
+                            "type": "string",
+                            "oneOf": [
+                                { "title": "Switch", "enum": ["DPT_Switch"] }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "form": null,
+    "display": null
+}
