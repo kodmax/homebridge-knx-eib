@@ -1,5 +1,5 @@
 {
-    "pluginAlias": "KNX Bridge",
+    "pluginAlias": "homebridge-knx-eib",
     "pluginType": "platform",
     "singular": false,
     "headerDisplay": "Optional content to display above the plugin config. Supports markdown.",
@@ -34,7 +34,7 @@
                             "required": true,
                             "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
                         },
-                        "datapoint type": {
+                        "datapointType": {
                             "title": "Datapoint Type",
                             "type": "string",
                             "oneOf": [
