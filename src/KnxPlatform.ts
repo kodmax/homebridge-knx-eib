@@ -1,9 +1,24 @@
 import { API, APIEvent, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, UnknownContext } from 'homebridge'
-import { isKnxPlatformConfig, KnxPlatformConfig } from './config'
+import { isKnxPlatformConfig, KnxGroup, KnxPlatformConfig } from './config'
 import { KnxLink } from 'js-knx'
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
+
+type KnxPlatformAccessory = PlatformAccessory<{ group: KnxGroup}>
 
 class KnxPlatform implements DynamicPlatformPlugin {
+    private accessories: Array<KnxPlatformAccessory> = []
     private readonly config: KnxPlatformConfig
+
+    private async connect (): Promise<KnxLink> {
+        const link = await KnxLink.connect(this.config.knxIpGatewayIp)
+        this.logger.debug(`KNX IP gateway ${this.config.knxIpGatewayIp} connection established.`)
+        this.api.on(APIEvent.SHUTDOWN, async () => {
+            await link.disconnect()
+            this.logger.debug(`KNX IP gateway ${this.config.knxIpGatewayIp} connection closed.`)
+        })
+
+        return link
+    }
 
     public constructor (private logger: Logging, config: PlatformConfig, private api: API) {
         if (!isKnxPlatformConfig(config)) {
@@ -14,19 +29,42 @@ class KnxPlatform implements DynamicPlatformPlugin {
         }
 
         api.on(APIEvent.DID_FINISH_LAUNCHING, async () => {
-            const knx = await KnxLink.connect(config.knxIpGatewayIp)
-            api.on(APIEvent.SHUTDOWN, async () => {
-                await knx.disconnect()
-
-                logger.debug(`KNX IP gateway ${config.knxIpGatewayIp} connection closed.`)
-            })
-
-            logger.debug(`KNX IP gateway ${config.knxIpGatewayIp} connection established.`)
+            this.configureAccessories(await this.connect())
         })
     }
 
     public configureAccessory (accessory: PlatformAccessory<UnknownContext>): void {
+        this.accessories.push(accessory as KnxPlatformAccessory)
+    }
 
+    private configureAccessories (knx: KnxLink): void {
+        const alreadyRegistered = new Set(this.accessories.map(acc => acc.UUID))
+        const toRegister: Array<PlatformAccessory<UnknownContext>> = []
+
+        for (const group of this.config.groups) {
+            const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${group.address}`)
+            if (!alreadyRegistered.has(uuid)) {
+                // eslint-disable-next-line new-cap
+                const accessory = new this.api.platformAccessory(group.name, uuid) as KnxPlatformAccessory
+                accessory.context.group = group
+
+                this.accessories.push(accessory)
+                toRegister.push(accessory)
+
+                this.logger.debug('will register knx group as accessory', group.address)
+            }
+        }
+
+        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, toRegister)
+
+        for (const accessory of this.accessories) {
+            this.setupAccessory(knx, accessory)
+        }
+    }
+
+    private setupAccessory(knx: KnxLink, accessory: KnxPlatformAccessory): void {
+        // const service = accessory.getService(this.api.hap.Service.Lightbulb) ?? accessory.addService(this.api.hap.Service.Lightbulb)
+        
     }
 }
 
