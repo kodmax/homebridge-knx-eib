@@ -1,5 +1,5 @@
 {
-    "pluginAlias": "homebridge-knx-eib",
+    "pluginAlias": "KNX Bridge",
     "pluginType": "platform",
     "singular": false,
     "headerDisplay": "Optional content to display above the plugin config. Supports markdown.",

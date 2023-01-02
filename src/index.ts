@@ -1,7 +1,7 @@
 import { KnxPlatform } from './KnxPlatform'
 import { API } from 'homebridge'
-import { PLATFORM_NAME } from './settings'
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 
 export default (api: API) => {
-    api.registerPlatform(PLATFORM_NAME, KnxPlatform)
+    api.registerPlatform(PLUGIN_NAME, PLATFORM_NAME, KnxPlatform)
 }
