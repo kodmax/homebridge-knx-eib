@@ -1,6 +1,14 @@
-import { API, APIEvent, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, UnknownContext } from 'homebridge'
+import {
+    API,
+    APIEvent,
+    DynamicPlatformPlugin,
+    Logging,
+    PlatformAccessory,
+    PlatformConfig,
+    UnknownContext
+} from 'homebridge'
 import { isKnxPlatformConfig, KnxGroup, KnxPlatformConfig } from './config'
-import { KnxLink } from 'js-knx'
+import { DPT_Switch, KnxLink } from 'js-knx'
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 
 type KnxPlatformAccessory = PlatformAccessory<{ group: KnxGroup}>
@@ -62,9 +70,24 @@ class KnxPlatform implements DynamicPlatformPlugin {
         }
     }
 
-    private setupAccessory(knx: KnxLink, accessory: KnxPlatformAccessory): void {
-        // const service = accessory.getService(this.api.hap.Service.Lightbulb) ?? accessory.addService(this.api.hap.Service.Lightbulb)
-        
+    private setupAccessory (knx: KnxLink, accessory: KnxPlatformAccessory): void {
+        const dp = knx.getDatapoint({ address: accessory.context.group.address, DataType: DPT_Switch })
+
+        const service = accessory.getService(this.api.hap.Service.Lightbulb) ??
+            accessory.addService(this.api.hap.Service.Lightbulb, accessory.context.group.name)
+
+        const on = service.getCharacteristic(this.api.hap.Characteristic.On)
+        on.onGet(async () => {
+            return (await dp.read()).value
+        })
+        on.onSet(async turnOn => {
+            if (turnOn) {
+                await dp.on()
+
+            } else {
+                await dp.off()
+            }
+        })
     }
 }
 
