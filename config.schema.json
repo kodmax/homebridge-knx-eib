@@ -6,31 +6,23 @@
         "type": "object",
         "properties": {
             "name": {
-                "title": "Name",
-                "type": "string",
-                "required": false
+                "title": "Knx Bridge Name",
+                "type": "string"
             },
             "knxIpGatewayIp": {
                 "title": "KNX/IP Gateway IP",
-                "type": "string",
-                "required": true
+                "required": true,
+                "type": "string"
             },
-            "groups": {
-                "title": "KNX Groups",
+            "accessories": {
                 "type": "array",
                 "items": {
                     "type": "object",
                     "properties": {
                         "name": {
-                            "title": "Name",
+                            "title": "Accessory Name",
                             "type": "string",
                             "required": true
-                        },
-                        "address": {
-                            "title": "Address",
-                            "type": "string",
-                            "required": true,
-                            "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
                         },
                         "service": {
                             "title": "Service",
@@ -40,12 +32,80 @@
                                 { "title": "Lightbulb", "enum": ["Lightbulb"] },
                                 { "title": "CO2 Sensor", "enum": ["CarbonDioxideSensor"] }
                             ]
+                        },
+                        "addresses": {
+                            "type": "array",
+                            "items": {
+                                "title": "KNX Group Address",
+                                "type": "string",
+                                "required": true,
+                                "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
+                            }
                         }
                     }
                 }
+            },
+            "notes": {
+                "type": "string"
             }
         }
     },
+    "layout": [
+        {
+            "key": "name"
+        },
+        {
+            "key": "knxIpGatewayIp",
+            "placeholder": "192.168.x.x"
+        },
+        {
+            "type": "section",
+            "title": "Accessories",
+            "expandable": true,
+            "expanded": true,
+            "items": [
+                {
+                    "key": "accessories",
+                    "notitle": true,
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "div",
+                            "items": [
+                                {
+                                    "key": "accessories[].name"
+                                },
+                                {
+                                    "key": "accessories[].service"
+                                },
+                                {
+                                    "key": "accessories[].addresses",
+                                    "notitle": true,
+                                    "items": [
+                                        { "type": "string", "title": "KNX Group Address" }
+                                        ],
+                                    "type": "array"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "title": "Notes",
+            "expandable": true,
+            "expanded": false,
+            "items": [
+                {
+                    "key": "notes",
+                    "type": "textarea",
+                    "notitle": true
+                }
+            ]
+        }
+    ],
     "form": null,
     "display": null
 }

@@ -8,7 +8,7 @@ import { KnxService } from '../KnxPlatform'
 class CarbonDioxiditeSensor implements KnxService {
     private getDatapoint (): DPT_Alarm {
         return this.knx.getDatapoint({
-            address: this.accessory.context.group.address,
+            address: this.accessory.context.knx.addresses[0],
             DataType: DPT_Alarm
         })
     }
@@ -17,7 +17,7 @@ class CarbonDioxiditeSensor implements KnxService {
         const service = this.api.hap.Service.CarbonDioxideSensor
 
         return this.accessory.getService(service) ??
-            this.accessory.addService(service, this.accessory.context.group.name)
+            this.accessory.addService(service, this.accessory.context.knx.name)
     }
 
     public constructor (protected api: API, protected knx: KnxLink, protected accessory: KnxPlatformAccessory) {

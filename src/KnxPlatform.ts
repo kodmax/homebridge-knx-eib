@@ -1,7 +1,7 @@
 import { API, APIEvent, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, UnknownContext } from 'homebridge'
 import { KnxLink } from 'js-knx'
 
-import { isKnxPlatformConfig, KnxGroup, KnxPlatformAccessory, KnxPlatformConfig } from './config'
+import { isKnxPlatformConfig, KnxAccessory, KnxPlatformAccessory, KnxPlatformConfig } from './config'
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 
 import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
@@ -46,24 +46,30 @@ class KnxPlatform implements DynamicPlatformPlugin {
 
     private configureAccessories (knx: KnxLink): void {
         const alreadyRegistered = new Set(this.accessories.map(acc => acc.UUID))
-        for (const group of this.config.groups) {
-            const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${group.address}`)
+        for (const knxAccessory of this.config.accessories) {
+            const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${knxAccessory.addresses[0]}`)
 
             if (!alreadyRegistered.has(uuid)) {
-                this.registerAccessory(uuid, group)
+                this.registerAccessory(uuid, knxAccessory)
             }
         }
 
         for (const accessory of this.accessories) {
-            this.services.push(this.setupAccessory(knx, accessory))
+            try {
+                this.services.push(this.setupAccessory(knx, accessory))
+
+            } catch (e) {
+                this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
+                throw e
+            }
         }
     }
 
-    private registerAccessory (uuid: string, group: KnxGroup): KnxPlatformAccessory {
-        this.logger.debug('will register knx group as accessory', group.address)
+    private registerAccessory (uuid: string, knxAccessory: KnxAccessory): KnxPlatformAccessory {
+        this.logger.debug('will register knx group as accessory', knxAccessory.addresses.join(', '))
         // eslint-disable-next-line new-cap
-        const accessory = new this.api.platformAccessory(group.name, uuid) as KnxPlatformAccessory
-        accessory.context.group = group
+        const accessory = new this.api.platformAccessory(knxAccessory.name, uuid) as KnxPlatformAccessory
+        accessory.context.knx = knxAccessory
 
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
         this.accessories.push(accessory)
@@ -71,16 +77,15 @@ class KnxPlatform implements DynamicPlatformPlugin {
     }
 
     private setupAccessory (knx: KnxLink, accessory: KnxPlatformAccessory): KnxService {
-        switch (accessory.context.group.service) {
+        switch (accessory.context.knx.service) {
             case 'Lightbulb':
                 return new Lightbulb(this.api, knx, accessory)
-            
+
             case 'CarbonDioxideSensor':
                 return new CarbonDioxiditeSensor(this.api, knx, accessory)
 
             default:
-                this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
-                throw new Error(`<${accessory.context.group.service}> service not supported`)
+                throw new Error(`<${accessory.context.knx.service}> service not supported`)
         }
     }
 }

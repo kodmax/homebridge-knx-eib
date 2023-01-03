@@ -8,7 +8,7 @@ import { KnxService } from '../KnxPlatform'
 class Lightbulb implements KnxService {
     private getDatapoint (): DPT_Switch {
         return this.knx.getDatapoint({
-            address: this.accessory.context.group.address,
+            address: this.accessory.context.knx.addresses[0],
             DataType: DPT_Switch
         })
     }
@@ -17,7 +17,7 @@ class Lightbulb implements KnxService {
         const service = this.api.hap.Service.Lightbulb
 
         return this.accessory.getService(service) ??
-            this.accessory.addService(service, this.accessory.context.group.name)
+            this.accessory.addService(service, this.accessory.context.knx.name)
     }
 
     public constructor (protected api: API, protected knx: KnxLink, protected accessory: KnxPlatformAccessory) {
