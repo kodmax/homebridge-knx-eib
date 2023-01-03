@@ -34,11 +34,11 @@
                             "required": true,
                             "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
                         },
-                        "datapointType": {
-                            "title": "Datapoint Type",
+                        "service": {
+                            "title": "Service",
                             "type": "string",
                             "oneOf": [
-                                { "title": "Switch", "enum": ["DPT_Switch"] }
+                                { "title": "Lightbulb", "enum": ["Lightbulb"] }
                             ]
                         }
                     }

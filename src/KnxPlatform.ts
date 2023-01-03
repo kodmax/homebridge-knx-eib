@@ -1,21 +1,18 @@
-import {
-    API,
-    APIEvent,
-    DynamicPlatformPlugin,
-    Logging,
-    PlatformAccessory,
-    PlatformConfig,
-    UnknownContext
-} from 'homebridge'
-import { isKnxPlatformConfig, KnxGroup, KnxPlatformConfig } from './config'
-import { DPT_Switch, KnxLink } from 'js-knx'
-import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
+import { API, APIEvent, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, UnknownContext } from 'homebridge'
+import { KnxLink } from 'js-knx'
 
-type KnxPlatformAccessory = PlatformAccessory<{ group: KnxGroup}>
+import { isKnxPlatformConfig, KnxGroup, KnxPlatformAccessory, KnxPlatformConfig } from './config'
+import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
+import { Lightbulb } from './service/Lightbulb'
+
+interface KnxService {
+
+}
 
 class KnxPlatform implements DynamicPlatformPlugin {
     private accessories: Array<KnxPlatformAccessory> = []
-    private readonly config: KnxPlatformConfig
+    private services: KnxService[] = []
+    private config: KnxPlatformConfig
 
     private async connect (): Promise<KnxLink> {
         const link = await KnxLink.connect(this.config.knxIpGatewayIp)
@@ -47,48 +44,41 @@ class KnxPlatform implements DynamicPlatformPlugin {
 
     private configureAccessories (knx: KnxLink): void {
         const alreadyRegistered = new Set(this.accessories.map(acc => acc.UUID))
-        const toRegister: Array<PlatformAccessory<UnknownContext>> = []
-
         for (const group of this.config.groups) {
             const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${group.address}`)
+
             if (!alreadyRegistered.has(uuid)) {
-                // eslint-disable-next-line new-cap
-                const accessory = new this.api.platformAccessory(group.name, uuid) as KnxPlatformAccessory
-                accessory.context.group = group
-
-                this.accessories.push(accessory)
-                toRegister.push(accessory)
-
-                this.logger.debug('will register knx group as accessory', group.address)
+                this.registerAccessory(uuid, group)
             }
         }
 
-        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, toRegister)
-
         for (const accessory of this.accessories) {
-            this.setupAccessory(knx, accessory)
+            this.services.push(this.setupAccessory(knx, accessory))
         }
     }
 
-    private setupAccessory (knx: KnxLink, accessory: KnxPlatformAccessory): void {
-        const dp = knx.getDatapoint({ address: accessory.context.group.address, DataType: DPT_Switch })
+    private registerAccessory (uuid: string, group: KnxGroup): KnxPlatformAccessory {
+        this.logger.debug('will register knx group as accessory', group.address)
+        // eslint-disable-next-line new-cap
+        const accessory = new this.api.platformAccessory(group.name, uuid) as KnxPlatformAccessory
+        accessory.context.group = group
 
-        const service = accessory.getService(this.api.hap.Service.Lightbulb) ??
-            accessory.addService(this.api.hap.Service.Lightbulb, accessory.context.group.name)
+        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
+        this.accessories.push(accessory)
+        return accessory
+    }
 
-        const on = service.getCharacteristic(this.api.hap.Characteristic.On)
-        on.onGet(async () => {
-            return (await dp.read()).value
-        })
-        on.onSet(async turnOn => {
-            if (turnOn) {
-                await dp.on()
+    private setupAccessory (knx: KnxLink, accessory: KnxPlatformAccessory): KnxService {
+        switch (accessory.context.group.service) {
+            case 'Lightbulb':
+                return new Lightbulb(this.api, knx, accessory)
 
-            } else {
-                await dp.off()
-            }
-        })
+            default:
+                this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
+                throw new Error(`<${accessory.context.group.service}> service not supported`)
+        }
     }
 }
 
+export type { KnxService }
 export { KnxPlatform }
