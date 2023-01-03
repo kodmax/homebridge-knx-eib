@@ -1,19 +1,34 @@
 import { API, Service } from 'homebridge'
-import { DPT_Switch } from 'js-knx'
+import { DPT_Switch, KnxLink } from 'js-knx'
 
-const addOnCharacteristic = (api: API, service: Service, dp: DPT_Switch): void => {
+const addOnCharacteristic = (api: API, service: Service, knx: KnxLink, transmitGroupAddress: string, stateGroupAddress?: string): void => {
     const on = service.getCharacteristic(api.hap.Characteristic.On)
 
-    dp.addValueListener(reading => {
+    const transmit = knx.getDatapoint({
+        address: transmitGroupAddress,
+        DataType: DPT_Switch
+    })
+
+    const state = !stateGroupAddress ? transmit : knx.getDatapoint({
+        address: stateGroupAddress,
+        DataType: DPT_Switch
+    })
+
+    state.addValueListener(reading => {
         on.updateValue(reading.value)
     })
 
     on.onGet(async () => {
-        return (await dp.read()).value
+        try {
+            return (await state.read()).value
+
+        } catch (e) {
+            return null
+        }
     })
 
     on.onSet(async turnOn => {
-        await dp.write(turnOn ? 1 : 0)
+        await transmit.write(turnOn ? 1 : 0)
     })
 }
 

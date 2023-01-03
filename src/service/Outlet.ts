@@ -1,4 +1,4 @@
-import { DPT_Switch, KnxLink } from 'js-knx'
+import { KnxLink } from 'js-knx'
 import { API } from 'homebridge'
 
 import { KnxPlatformAccessory } from '../KnxPlatformAccessory'
@@ -12,10 +12,7 @@ class Outlet extends AbstractKnxService {
         super(api, knx, accessory, config)
 
         const service = this.getService(this.api.hap.Service.Lightbulb)
-        addOnCharacteristic(api, service, this.knx.getDatapoint({
-            address: this.config.addresses[0],
-            DataType: DPT_Switch
-        }))
+        addOnCharacteristic(api, service, knx, config.addresses[0], config.addresses[1])
     }
 }
 
