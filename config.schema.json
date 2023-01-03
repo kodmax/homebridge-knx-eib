@@ -49,6 +49,12 @@
                                                 "enum": [
                                                     "CarbonDioxideSensor"
                                                 ]
+                                            },
+                                            {
+                                                "title": "Humidity Sensor",
+                                                "enum": [
+                                                    "HumiditySensor"
+                                                ]
                                             }
                                         ]
                                     },

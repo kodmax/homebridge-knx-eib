@@ -1,13 +1,14 @@
 import { API, Logging } from 'homebridge'
 import { KnxLink } from 'js-knx'
 
+import { AbstractKnxService } from './service/AbstractKnxService'
 import { KnxPlatformAccessory } from './KnxPlatformAccessory'
-import { KnxAccessoryConfig } from './config'
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
+import { KnxAccessoryConfig } from './config'
 
 import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
+import { HumiditySensor } from './service/HumiditySensor'
 import { Lightbulb } from './service/Lightbulb'
-import { AbstractKnxService } from './service/AbstractKnxService'
 
 class KnxAccessory {
     public readonly displayName: string
@@ -55,6 +56,10 @@ class KnxAccessory {
 
                 case 'CarbonDioxideSensor':
                     this.services.push(new CarbonDioxiditeSensor(this.api, this.knx, accessory, service))
+                    break
+
+                case 'HumiditySensor':
+                    this.services.push(new HumiditySensor(this.api, this.knx, accessory, service))
                     break
 
                 default:
