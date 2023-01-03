@@ -3,6 +3,8 @@ import { KnxLink } from 'js-knx'
 
 import { isKnxPlatformConfig, KnxGroup, KnxPlatformAccessory, KnxPlatformConfig } from './config'
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
+
+import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
 import { Lightbulb } from './service/Lightbulb'
 
 interface KnxService {
@@ -72,6 +74,9 @@ class KnxPlatform implements DynamicPlatformPlugin {
         switch (accessory.context.group.service) {
             case 'Lightbulb':
                 return new Lightbulb(this.api, knx, accessory)
+            
+            case 'CarbonDioxideSensor':
+                return new CarbonDioxiditeSensor(this.api, knx, accessory)
 
             default:
                 this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
