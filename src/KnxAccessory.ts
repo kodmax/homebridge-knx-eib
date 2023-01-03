@@ -9,6 +9,7 @@ import { KnxAccessoryConfig } from './config'
 import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
 import { TemperatureSensor } from './service/TemperatureSensor'
 import { HumiditySensor } from './service/HumiditySensor'
+import { Thermostat } from './service/Thermostat'
 import { Lightbulb } from './service/Lightbulb'
 import { Outlet } from './service/Outlet'
 import { Switch } from './service/Switch'
@@ -65,7 +66,7 @@ class KnxAccessory {
                 case 'Switch':
                     this.services.push(new Switch(this.api, this.knx, accessory, service))
                     break
-                
+
                 case 'Fanv2':
                     this.services.push(new Fanv2(this.api, this.knx, accessory, service))
                     break
@@ -80,6 +81,10 @@ class KnxAccessory {
 
                 case 'TemperatureSensor':
                     this.services.push(new TemperatureSensor(this.api, this.knx, accessory, service))
+                    break
+
+                case 'Thermostat':
+                    this.services.push(new Thermostat(this.api, this.knx, accessory, service))
                     break
 
                 default:

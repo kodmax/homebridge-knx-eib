@@ -18,7 +18,7 @@ class KnxPlatform implements DynamicPlatformPlugin {
         })
 
         this.logger.debug(`KNX IP gateway ${this.config.knxIpGatewayIp} connection established.`)
-        
+
         this.api.on(APIEvent.SHUTDOWN, async () => {
             await link.disconnect()
             this.logger.debug(`KNX IP gateway ${this.config.knxIpGatewayIp} connection closed.`)

@@ -2,6 +2,83 @@
     "pluginAlias": "KNX Bridge",
     "pluginType": "platform",
     "singular": false,
+    "layout": [
+        {
+            "key": "name"
+        },
+        {
+            "key": "knxIpGatewayIp",
+            "placeholder": "192.168.x.x"
+        },
+        {
+            "type": "section",
+            "title": "Accessories",
+            "expandable": true,
+            "expanded": false,
+            "items": [
+                {
+                    "key": "accessories",
+                    "notitle": true,
+                    "type": "array",
+                    "items": [
+                        {
+                            "type": "div",
+                            "items": [
+                                {
+                                    "key": "accessories[].name"
+                                },
+                                {
+                                    "key": "accessories[].services",
+                                    "title": "Services",
+                                    "type": "section",
+                                    "expandable": true,
+                                    "expanded": false,
+                                    "items": [
+                                        {
+                                            "key": "accessories[].services[].name"
+                                        },
+                                        {
+                                            "key": "accessories[].services[].id"
+                                        },
+                                        {
+                                            "key": "accessories[].services[].addresses",
+                                            "title": "KNX Groups Address",
+                                            "expandable": true,
+                                            "expanded": false,
+                                            "type": "section",
+                                            "items": [
+                                                {
+                                                    "type": "div",
+                                                    "items": [
+                                                        {
+                                                            "key": "accessories[].services[].addresses[]"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "section",
+            "title": "Notes",
+            "expandable": true,
+            "expanded": false,
+            "items": [
+                {
+                    "key": "notes",
+                    "type": "textarea",
+                    "notitle": true
+                }
+            ]
+        }
+    ],
     "schema": {
         "type": "object",
         "properties": {
@@ -30,11 +107,12 @@
                                 "type": "object",
                                 "properties": {
                                     "name": {
+                                        "title": "Service Name",
                                         "type": "string",
                                         "required": true
                                     },
                                     "id": {
-                                        "title": "Service",
+                                        "title": "Service Type",
                                         "type": "string",
                                         "required": true,
                                         "oneOf": [
@@ -79,6 +157,12 @@
                                                 "enum": [
                                                     "TemperatureSensor"
                                                 ]
+                                            },
+                                            {
+                                                "title": "Thermostat",
+                                                "enum": [
+                                                    "Thermostat"
+                                                ]
                                             }
                                         ]
                                     },
@@ -101,77 +185,6 @@
             }
         }
     },
-    "layout": [
-        {
-            "key": "name"
-        },
-        {
-            "key": "knxIpGatewayIp",
-            "placeholder": "192.168.x.x"
-        },
-        {
-            "type": "section",
-            "title": "Accessories",
-            "expandable": true,
-            "expanded": false,
-            "items": [
-                {
-                    "key": "accessories",
-                    "notitle": true,
-                    "type": "array",
-                    "items": [
-                        {
-                            "type": "div",
-                            "items": [
-                                {
-                                    "key": "accessories[].name"
-                                },
-                                {
-                                    "key": "accessories[].services",
-                                    "title": "Services",
-                                    "type": "section",
-                                    "expandable": true,
-                                    "expanded": false,
-                                    "items": [
-                                        {
-                                            "key": "accessories[].services[].name"
-                                        },
-                                        {
-                                            "key": "accessories[].services[].id"
-                                        },
-                                        {
-                                            "key": "accessories[].services[].addresses",
-                                            "notitle": true,
-                                            "items": [
-                                                {
-                                                    "type": "string",
-                                                    "title": "KNX Group Address"
-                                                }
-                                            ],
-                                            "type": "array"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "section",
-            "title": "Notes",
-            "expandable": true,
-            "expanded": false,
-            "items": [
-                {
-                    "key": "notes",
-                    "type": "textarea",
-                    "notitle": true
-                }
-            ]
-        }
-    ],
     "form": null,
     "display": null
 }
