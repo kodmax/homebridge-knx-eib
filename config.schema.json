@@ -57,6 +57,12 @@
                                                 ]
                                             },
                                             {
+                                                "title": "Fan v2",
+                                                "enum": [
+                                                    "Fanv2"
+                                                ]
+                                            },
+                                            {
                                                 "title": "CO2 Sensor",
                                                 "enum": [
                                                     "CarbonDioxideSensor"

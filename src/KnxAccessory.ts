@@ -12,6 +12,7 @@ import { HumiditySensor } from './service/HumiditySensor'
 import { Lightbulb } from './service/Lightbulb'
 import { Outlet } from './service/Outlet'
 import { Switch } from './service/Switch'
+import { Fanv2 } from './service/Fanv2'
 
 class KnxAccessory {
     public readonly displayName: string
@@ -63,6 +64,10 @@ class KnxAccessory {
 
                 case 'Switch':
                     this.services.push(new Switch(this.api, this.knx, accessory, service))
+                    break
+                
+                case 'Fanv2':
+                    this.services.push(new Fanv2(this.api, this.knx, accessory, service))
                     break
 
                 case 'CarbonDioxideSensor':
