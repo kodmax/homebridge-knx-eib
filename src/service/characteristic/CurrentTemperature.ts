@@ -9,12 +9,7 @@ const addCurrentTemperatureCharacteristic = (api: API, service: Service, dp: DPT
     })
 
     currentTemperature.onGet(async () => {
-        try {
-            return (await dp.read()).value
-
-        } catch (e) {
-            return null
-        }
+        return (await dp.read()).value
     })
 }
 

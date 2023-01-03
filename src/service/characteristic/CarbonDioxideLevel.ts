@@ -9,12 +9,7 @@ const addCarbonDioxideLevelCharacteristic = (api: API, service: Service, dp: DPT
     })
 
     carbonDioxiditeLevel.onGet(async () => {
-        try {
-            return (await dp.read()).value
-
-        } catch (e) {
-            return null
-        }
+        return (await dp.read()).value
     })
 }
 

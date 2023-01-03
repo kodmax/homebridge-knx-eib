@@ -9,12 +9,7 @@ const addCarbonDioxideDetectedCharacteristic = (api: API, service: Service, dp: 
     })
 
     carbonDioxiditeDetected.onGet(async () => {
-        try {
-            return (await dp.read()).value
-
-        } catch (e) {
-            return null
-        }
+        return (await dp.read()).value
     })
 }
 

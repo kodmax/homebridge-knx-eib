@@ -19,12 +19,7 @@ const addOnCharacteristic = (api: API, service: Service, knx: KnxLink, transmitG
     })
 
     on.onGet(async () => {
-        try {
-            return (await state.read()).value
-
-        } catch (e) {
-            return null
-        }
+        return (await state.read()).value
     })
 
     on.onSet(async turnOn => {

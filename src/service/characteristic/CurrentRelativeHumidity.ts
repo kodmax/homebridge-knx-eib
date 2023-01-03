@@ -9,12 +9,7 @@ const addCurrentRelativeHumidityCharacteristic = (api: API, service: Service, dp
     })
 
     currentRelativeHumidity.onGet(async () => {
-        try {
-            return (await dp.read()).value
-
-        } catch (e) {
-            return null
-        }
+        return (await dp.read()).value
     })
 }
 
