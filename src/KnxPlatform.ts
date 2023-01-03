@@ -42,31 +42,46 @@ class KnxPlatform implements DynamicPlatformPlugin {
         this.accessories.push(accessory as KnxPlatformAccessory)
     }
 
+    private getAccessoryUUID (config: KnxAccessoryConfig): string {
+        const addresses = config.services.map(service => service.addresses.join(',')).join(',')
+        return this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${addresses}`)
+    }
+
+    private getAccessoryDisplayName (config: KnxAccessoryConfig): string {
+        return `${config.name} ${config.services[0].name}`
+    }
+
     private configureAccessories (knx: KnxLink): void {
         const alreadyRegistered = new Set(this.accessories.map(acc => acc.UUID))
         for (const config of this.config.accessories) {
-            const addresses = config.services.map(service => service.addresses.join(',')).join(',')
-            const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${addresses}`)
+            const uuid = this.getAccessoryUUID(config)
 
             if (!alreadyRegistered.has(uuid)) {
                 this.registerAccessory(uuid, config)
             }
         }
 
+        const isConfigured = new Set(this.config.accessories.map(config => this.getAccessoryUUID(config)))
         for (const accessory of this.accessories) {
-            try {
-                this.setupAccessory(knx, accessory)
+            if (isConfigured.has(accessory.UUID)) {
+                try {
+                    this.setupAccessory(knx, accessory)
 
-            } catch (e) {
+                } catch (e) {
+                    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
+                    throw e
+                }
+
+            } else {
+                this.logger.debug('unregistering knx accessory', accessory.displayName)
                 this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
-                throw e
             }
         }
     }
 
     private registerAccessory (uuid: string, config: KnxAccessoryConfig): KnxPlatformAccessory {
-        const displayName = `${config.name} ${config.services[0].name}`
-        this.logger.debug('will register knx accessory', displayName)
+        const displayName = this.getAccessoryDisplayName(config)
+        this.logger.debug('registering knx accessory', displayName)
         // eslint-disable-next-line new-cap
         const accessory = new this.api.platformAccessory(displayName, uuid) as KnxPlatformAccessory
         accessory.context = config
