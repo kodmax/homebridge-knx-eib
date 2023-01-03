@@ -1,4 +1,4 @@
-import { DPT_Value_Temp, KnxLink } from 'js-knx'
+import { KnxLink } from 'js-knx'
 import { API } from 'homebridge'
 
 import { addCurrentTemperatureCharacteristic } from './characteristic/CurrentTemperature'
@@ -12,10 +12,7 @@ class TemperatureSensor extends AbstractKnxService {
         super(api, knx, accessory, config)
 
         const service = this.getService(this.api.hap.Service.TemperatureSensor)
-        addCurrentTemperatureCharacteristic(api, service, this.knx.getDatapoint({
-            address: this.config.addresses[0],
-            DataType: DPT_Value_Temp
-        }))
+        addCurrentTemperatureCharacteristic(api, service, knx, this.config.addresses[0])
     }
 }
 

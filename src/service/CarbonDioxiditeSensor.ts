@@ -1,4 +1,4 @@
-import { DPT_Alarm, DPT_Value_AirQuality, KnxLink } from 'js-knx'
+import { KnxLink } from 'js-knx'
 import { API } from 'homebridge'
 
 import { addCarbonDioxideDetectedCharacteristic } from './characteristic/CarbonDioxideDetected'
@@ -13,16 +13,10 @@ class CarbonDioxiditeSensor extends AbstractKnxService {
         super(api, knx, accessory, config)
 
         const service = this.getService(this.api.hap.Service.CarbonDioxideSensor)
-        addCarbonDioxideDetectedCharacteristic(api, service, this.knx.getDatapoint({
-            address: this.config.addresses[0],
-            DataType: DPT_Alarm
-        }))
+        addCarbonDioxideDetectedCharacteristic(api, service, knx, this.config.addresses[0])
 
         if (this.config.addresses[1]) {
-            addCarbonDioxideLevelCharacteristic(api, service, this.knx.getDatapoint({
-                address: this.config.addresses[1],
-                DataType: DPT_Value_AirQuality
-            }))
+            addCarbonDioxideLevelCharacteristic(api, service, knx, this.config.addresses[1])
         }
     }
 }

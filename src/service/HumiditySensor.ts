@@ -1,4 +1,4 @@
-import { DPT_Value_Humidity, KnxLink } from 'js-knx'
+import { KnxLink } from 'js-knx'
 import { API } from 'homebridge'
 
 import { addCurrentRelativeHumidityCharacteristic } from './characteristic/CurrentRelativeHumidity'
@@ -12,10 +12,7 @@ class HumiditySensor extends AbstractKnxService {
         super(api, knx, accessory, config)
 
         const service = this.getService(this.api.hap.Service.HumiditySensor)
-        addCurrentRelativeHumidityCharacteristic(api, service, this.knx.getDatapoint({
-            address: this.config.addresses[0],
-            DataType: DPT_Value_Humidity
-        }))
+        addCurrentRelativeHumidityCharacteristic(api, service, knx, this.config.addresses[0])
     }
 }
 
