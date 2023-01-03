@@ -1,19 +1,15 @@
 import { API, APIEvent, DynamicPlatformPlugin, Logging, PlatformAccessory, PlatformConfig, UnknownContext } from 'homebridge'
 import { KnxLink } from 'js-knx'
 
-import { isKnxPlatformConfig, KnxAccessory, KnxPlatformAccessory, KnxPlatformConfig } from './config'
+import { KnxPlatformAccessory, isKnxPlatformConfig } from './KnxPlatformAccessory'
+import { KnxAccessoryConfig, KnxPlatformConfig } from './config'
 import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 
 import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
 import { Lightbulb } from './service/Lightbulb'
 
-interface KnxService {
-
-}
-
 class KnxPlatform implements DynamicPlatformPlugin {
     private accessories: Array<KnxPlatformAccessory> = []
-    private services: KnxService[] = []
     private config: KnxPlatformConfig
 
     private async connect (): Promise<KnxLink> {
@@ -46,17 +42,18 @@ class KnxPlatform implements DynamicPlatformPlugin {
 
     private configureAccessories (knx: KnxLink): void {
         const alreadyRegistered = new Set(this.accessories.map(acc => acc.UUID))
-        for (const knxAccessory of this.config.accessories) {
-            const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${knxAccessory.addresses[0]}`)
+        for (const config of this.config.accessories) {
+            const addresses = config.services.map(service => service.addresses.join(',')).join(',')
+            const uuid = this.api.hap.uuid.generate(`${PLATFORM_NAME}.${this.config.name}.${addresses}`)
 
             if (!alreadyRegistered.has(uuid)) {
-                this.registerAccessory(uuid, knxAccessory)
+                this.registerAccessory(uuid, config)
             }
         }
 
         for (const accessory of this.accessories) {
             try {
-                this.services.push(this.setupAccessory(knx, accessory))
+                this.setupAccessory(knx, accessory)
 
             } catch (e) {
                 this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
@@ -65,30 +62,38 @@ class KnxPlatform implements DynamicPlatformPlugin {
         }
     }
 
-    private registerAccessory (uuid: string, knxAccessory: KnxAccessory): KnxPlatformAccessory {
-        this.logger.debug('will register knx group as accessory', knxAccessory.addresses.join(', '))
+    private registerAccessory (uuid: string, config: KnxAccessoryConfig): KnxPlatformAccessory {
+        const displayName = `${config.name} ${config.services[0].name}`
+        this.logger.debug('will register knx accessory', displayName)
         // eslint-disable-next-line new-cap
-        const accessory = new this.api.platformAccessory(knxAccessory.name, uuid) as KnxPlatformAccessory
-        accessory.context.knx = knxAccessory
+        const accessory = new this.api.platformAccessory(displayName, uuid) as KnxPlatformAccessory
+        accessory.context = config
 
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
         this.accessories.push(accessory)
         return accessory
     }
 
-    private setupAccessory (knx: KnxLink, accessory: KnxPlatformAccessory): KnxService {
-        switch (accessory.context.knx.service) {
-            case 'Lightbulb':
-                return new Lightbulb(this.api, knx, accessory)
+    private setupAccessory (knx: KnxLink, accessory: KnxPlatformAccessory): void {
+        for (const service of accessory.context.services) {
+            switch (service.id) {
 
-            case 'CarbonDioxideSensor':
-                return new CarbonDioxiditeSensor(this.api, knx, accessory)
+                case 'Lightbulb':
+                    // eslint-disable-next-line no-new
+                    new Lightbulb(this.api, knx, accessory, service)
+                    break
 
-            default:
-                throw new Error(`<${accessory.context.knx.service}> service not supported`)
+                case 'CarbonDioxideSensor':
+                    // eslint-disable-next-line no-new
+                    new CarbonDioxiditeSensor(this.api, knx, accessory, service)
+                    break
+
+                default:
+                    throw new Error(`<${service.id}> service not supported`)
+            }
+
         }
     }
 }
 
-export type { KnxService }
 export { KnxPlatform }

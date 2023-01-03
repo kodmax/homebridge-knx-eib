@@ -24,22 +24,44 @@
                             "type": "string",
                             "required": true
                         },
-                        "service": {
-                            "title": "Service",
-                            "type": "string",
-                            "required": true,
-                            "oneOf": [
-                                { "title": "Lightbulb", "enum": ["Lightbulb"] },
-                                { "title": "CO2 Sensor", "enum": ["CarbonDioxideSensor"] }
-                            ]
-                        },
-                        "addresses": {
+                        "services": {
                             "type": "array",
                             "items": {
-                                "title": "KNX Group Address",
-                                "type": "string",
-                                "required": true,
-                                "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "required": true
+                                    },
+                                    "id": {
+                                        "title": "Service",
+                                        "type": "string",
+                                        "required": true,
+                                        "oneOf": [
+                                            {
+                                                "title": "Lightbulb",
+                                                "enum": [
+                                                    "Lightbulb"
+                                                ]
+                                            },
+                                            {
+                                                "title": "CO2 Sensor",
+                                                "enum": [
+                                                    "CarbonDioxideSensor"
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "addresses": {
+                                        "type": "array",
+                                        "items": {
+                                            "title": "KNX Group Address",
+                                            "type": "string",
+                                            "required": true,
+                                            "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$"
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -62,7 +84,7 @@
             "type": "section",
             "title": "Accessories",
             "expandable": true,
-            "expanded": true,
+            "expanded": false,
             "items": [
                 {
                     "key": "accessories",
@@ -76,15 +98,30 @@
                                     "key": "accessories[].name"
                                 },
                                 {
-                                    "key": "accessories[].service"
-                                },
-                                {
-                                    "key": "accessories[].addresses",
-                                    "notitle": true,
+                                    "key": "accessories[].services",
+                                    "title": "Services",
+                                    "type": "section",
+                                    "expandable": true,
+                                    "expanded": false,
                                     "items": [
-                                        { "type": "string", "title": "KNX Group Address" }
-                                        ],
-                                    "type": "array"
+                                        {
+                                            "key": "accessories[].services[].name"
+                                        },
+                                        {
+                                            "key": "accessories[].services[].id"
+                                        },
+                                        {
+                                            "key": "accessories[].services[].addresses",
+                                            "notitle": true,
+                                            "items": [
+                                                {
+                                                    "type": "string",
+                                                    "title": "KNX Group Address"
+                                                }
+                                            ],
+                                            "type": "array"
+                                        }
+                                    ]
                                 }
                             ]
                         }
