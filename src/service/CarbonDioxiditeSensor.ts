@@ -1,35 +1,21 @@
 import { DPT_Alarm, KnxLink } from 'js-knx'
-import { API, Service } from 'homebridge'
+import { API } from 'homebridge'
 
 import { addCarbonDioxideDetectedCharacteristic } from './characteristic/CarbonDioxideDetected'
-import { KnxServiceConfig } from '../config'
 import { KnxPlatformAccessory } from '../KnxPlatformAccessory'
+import { KnxServiceConfig } from '../config'
+import { AbstractKnxService } from './AbstractKnxService'
 
-class CarbonDioxiditeSensor {
-    private getDatapoint (): DPT_Alarm {
-        return this.knx.getDatapoint({
+class CarbonDioxiditeSensor extends AbstractKnxService {
+
+    public constructor (api: API, knx: KnxLink, accessory: KnxPlatformAccessory, config: KnxServiceConfig) {
+        super(api, knx, accessory, config)
+
+        const service = this.getService(this.api.hap.Service.CarbonDioxideSensor)
+        addCarbonDioxideDetectedCharacteristic(api, service, this.knx.getDatapoint({
             address: this.config.addresses[0],
             DataType: DPT_Alarm
-        })
-    }
-
-    private getService (): Service {
-        const service = this.api.hap.Service.CarbonDioxideSensor
-
-        return this.accessory.getService(service) ??
-            this.accessory.addService(service, `${this.accessory.context.name} ${this.config.name}`, this.config.name)
-    }
-
-    public constructor (
-        protected api: API,
-        protected knx: KnxLink,
-        protected accessory: KnxPlatformAccessory,
-        protected config: KnxServiceConfig
-    ) {
-        const service = this.getService()
-        const dp = this.getDatapoint()
-
-        addCarbonDioxideDetectedCharacteristic(dp, service, api)
+        }))
     }
 }
 

@@ -7,9 +7,11 @@ import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 
 import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
 import { Lightbulb } from './service/Lightbulb'
+import { AbstractKnxService } from './service/AbstractKnxService'
 
 class KnxPlatform implements DynamicPlatformPlugin {
     private accessories: Array<KnxPlatformAccessory> = []
+    private services: AbstractKnxService[] = []
     private config: KnxPlatformConfig
 
     private async connect (): Promise<KnxLink> {
@@ -79,13 +81,11 @@ class KnxPlatform implements DynamicPlatformPlugin {
             switch (service.id) {
 
                 case 'Lightbulb':
-                    // eslint-disable-next-line no-new
-                    new Lightbulb(this.api, knx, accessory, service)
+                    this.services.push(new Lightbulb(this.api, knx, accessory, service))
                     break
 
                 case 'CarbonDioxideSensor':
-                    // eslint-disable-next-line no-new
-                    new CarbonDioxiditeSensor(this.api, knx, accessory, service)
+                    this.services.push(new CarbonDioxiditeSensor(this.api, knx, accessory, service))
                     break
 
                 default:
