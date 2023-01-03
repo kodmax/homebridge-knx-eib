@@ -11,10 +11,6 @@ const addCarbonDioxideLevelCharacteristic = (api: API, service: Service, dp: DPT
     carbonDioxiditeLevel.onGet(async () => {
         return (await dp.read()).value
     })
-
-    carbonDioxiditeLevel.onSet(async turnOn => {
-        await dp.write(turnOn ? 1 : 0)
-    })
 }
 
 export { addCarbonDioxideLevelCharacteristic }

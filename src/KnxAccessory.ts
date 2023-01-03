@@ -7,8 +7,10 @@ import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 import { KnxAccessoryConfig } from './config'
 
 import { CarbonDioxiditeSensor } from './service/CarbonDioxiditeSensor'
+import { TemperatureSensor } from './service/TemperatureSensor'
 import { HumiditySensor } from './service/HumiditySensor'
 import { Lightbulb } from './service/Lightbulb'
+import { Outlet } from './service/Outlet'
 
 class KnxAccessory {
     public readonly displayName: string
@@ -54,12 +56,20 @@ class KnxAccessory {
                     this.services.push(new Lightbulb(this.api, this.knx, accessory, service))
                     break
 
+                case 'Outlet':
+                    this.services.push(new Outlet(this.api, this.knx, accessory, service))
+                    break
+
                 case 'CarbonDioxideSensor':
                     this.services.push(new CarbonDioxiditeSensor(this.api, this.knx, accessory, service))
                     break
 
                 case 'HumiditySensor':
                     this.services.push(new HumiditySensor(this.api, this.knx, accessory, service))
+                    break
+
+                case 'TemperatureSensor':
+                    this.services.push(new TemperatureSensor(this.api, this.knx, accessory, service))
                     break
 
                 default:

@@ -45,6 +45,12 @@
                                                 ]
                                             },
                                             {
+                                                "title": "Outlet",
+                                                "enum": [
+                                                    "Outlet"
+                                                ]
+                                            },
+                                            {
                                                 "title": "CO2 Sensor",
                                                 "enum": [
                                                     "CarbonDioxideSensor"
@@ -54,6 +60,12 @@
                                                 "title": "Humidity Sensor",
                                                 "enum": [
                                                     "HumiditySensor"
+                                                ]
+                                            },
+                                            {
+                                                "title": "Temperature Sensor",
+                                                "enum": [
+                                                    "TemperatureSensor"
                                                 ]
                                             }
                                         ]
