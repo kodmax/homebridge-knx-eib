@@ -8,8 +8,8 @@ import { PLATFORM_NAME, PLUGIN_NAME } from './settings'
 import { KnxPlatformConfig } from './config'
 
 class KnxPlatform implements DynamicPlatformPlugin {
+    private cachedAccessories: Map<string, KnxPlatformAccessory> = new Map()
     private knxAccessories: Map<string, KnxAccessory> = new Map()
-    private hbAccessories: Array<KnxPlatformAccessory> = []
     private config: KnxPlatformConfig
 
     private async connect (): Promise<KnxLink> {
@@ -37,36 +37,32 @@ class KnxPlatform implements DynamicPlatformPlugin {
     }
 
     public configureAccessory (accessory: PlatformAccessory<UnknownContext>): void {
-        this.hbAccessories.push(accessory as KnxPlatformAccessory)
+        this.cachedAccessories.set(accessory.UUID, accessory as KnxPlatformAccessory)
     }
 
     private configureAccessories (knx: KnxLink): void {
-        const alreadyRegistered = new Set(this.hbAccessories.map(acc => acc.UUID))
-
         for (const config of this.config.accessories) {
             const knxAccessory = new KnxAccessory(config, this.logger, knx, this.api)
-            if (!alreadyRegistered.has(knxAccessory.uuid)) {
-                knxAccessory.register()
-            }
-
             this.knxAccessories.set(knxAccessory.uuid, knxAccessory)
         }
 
-        for (const accessory of this.hbAccessories) {
-            const configuredAccessory = this.knxAccessories.get(accessory.UUID)
-            if (configuredAccessory) {
-                try {
-                    configuredAccessory.setupServices(accessory)
+        for (const accessory of this.cachedAccessories.values()) {
+            if (!this.knxAccessories.has(accessory.UUID)) {
+                this.logger.debug('unregistering unconfigured knx accessory', accessory.displayName)
+                this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
+            }
+        }
 
-                } catch (e) {
-                    this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
-                    this.logger.debug('unregistered knx accessory', accessory.displayName)
-                    throw e
-                }
+        for (const knxAccessory of this.knxAccessories.values()) {
+            const accessory = this.cachedAccessories.get(knxAccessory.uuid) ?? knxAccessory.register()
 
-            } else {
+            try {
+                knxAccessory.setupServices(accessory)
+
+            } catch (e) {
                 this.api.unregisterPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
                 this.logger.debug('unregistered knx accessory', accessory.displayName)
+                throw e
             }
         }
     }

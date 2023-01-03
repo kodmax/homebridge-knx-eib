@@ -1,7 +1,7 @@
-import { B1 } from 'js-knx/dist/dpts/formats'
 import { API, Service } from 'homebridge'
+import { DPT_Alarm } from 'js-knx'
 
-const addCarbonDioxideDetectedCharacteristic = (api: API, service: Service, dp: B1): void => {
+const addCarbonDioxideDetectedCharacteristic = (api: API, service: Service, dp: DPT_Alarm): void => {
     const carbonDioxiditeDetected = service.getCharacteristic(api.hap.Characteristic.CarbonDioxideDetected)
 
     dp.addValueListener(reading => {

@@ -1,7 +1,7 @@
-import { B1 } from 'js-knx/dist/dpts/formats'
 import { API, Service } from 'homebridge'
+import { DPT_Switch } from 'js-knx'
 
-const addOnCharacteristic = (api: API, service: Service, dp: B1): void => {
+const addOnCharacteristic = (api: API, service: Service, dp: DPT_Switch): void => {
     const on = service.getCharacteristic(api.hap.Characteristic.On)
 
     dp.addValueListener(reading => {
