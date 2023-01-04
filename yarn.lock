@@ -2731,10 +2731,10 @@ jest@28:
     import-local "^3.0.2"
     jest-cli "^28.1.3"
 
-js-knx@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/js-knx/-/js-knx-2.4.0.tgz#ccce5d756ce1cc8dc4f9fb338c8b5438f18639bb"
-  integrity sha512-bPnreoSHhs2hCdOnL/pTDvp3BVuSFlSHKjSDTXoUzIm3pIO5fGOKoPuDpnd++GIsQdxWYW2qOyQHGbPGzoVKXQ==
+js-knx@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/js-knx/-/js-knx-2.5.2.tgz#fc3c4016146da5507dfd00a0fd5726bb220239cf"
+  integrity sha512-PsRtVAMhPFJepEnT9oESHK4G1h7us2ykVgryfNL96sy1/MGt8cZUeX2WhB5cE48wEnZ/N71aWvupCZpJA6caMw==
 
 js-sdsl@^4.1.4:
   version "4.2.0"
