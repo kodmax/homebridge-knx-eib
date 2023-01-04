@@ -1,0 +1,470 @@
+{
+    "name": "Home K7",
+    "knxIpGatewayIp": "192.168.0.8",
+    "accessories": [
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Wall",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/2/1"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Table",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/2/6"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Air Quality",
+            "services": [
+                {
+                    "name": "CO2 Sensor",
+                    "id": "CarbonDioxideSensor",
+                    "addresses": [
+                        "15/1/0",
+                        "15/0/3",
+                        "15/5/5"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Humidity",
+            "services": [
+                {
+                    "name": "Bedroom",
+                    "id": "HumiditySensor",
+                    "addresses": [
+                        "15/0/5"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Temperature",
+            "services": [
+                {
+                    "name": "Living Room",
+                    "id": "TemperatureSensor",
+                    "addresses": [
+                        "15/0/7"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Temperature",
+            "services": [
+                {
+                    "name": "Bathroom floor",
+                    "id": "TemperatureSensor",
+                    "addresses": [
+                        "13/0/2"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Outlet",
+            "services": [
+                {
+                    "name": "Left",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/0/1"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Outlet",
+            "services": [
+                {
+                    "name": "Right",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/0/3"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Outlet",
+            "services": [
+                {
+                    "name": "Left",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/0/6"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Outlet",
+            "services": [
+                {
+                    "name": "Right",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/0/0"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Outlet",
+            "services": [
+                {
+                    "name": "Left",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/1/4"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Outlet",
+            "services": [
+                {
+                    "name": "Right",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/1/6"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "TV",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/6/9"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Couch",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/6/11"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Lamp",
+            "services": [
+                {
+                    "name": "TV",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/6/13",
+                        "14/6/14"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Lamp",
+            "services": [
+                {
+                    "name": "Kitchen",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/3/10",
+                        "14/3/11"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Lamp",
+            "services": [
+                {
+                    "name": "Dining",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/2/11",
+                        "14/2/12"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Countertop",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/3/6"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Fridge",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/3/8"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Ventilation",
+            "services": [
+                {
+                    "name": "Wall",
+                    "id": "Fanv2",
+                    "addresses": [
+                        "11/1/1",
+                        "11/1/0"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Ventilation",
+            "services": [
+                {
+                    "name": "Wall",
+                    "id": "Fanv2",
+                    "addresses": [
+                        "11/0/0",
+                        "11/0/1"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Hal",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/5/2"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Temperature",
+            "services": [
+                {
+                    "name": "Bathroom",
+                    "id": "TemperatureSensor",
+                    "addresses": [
+                        "15/0/8"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Temperature",
+            "services": [
+                {
+                    "name": "Bedroom",
+                    "id": "TemperatureSensor",
+                    "addresses": [
+                        "15/0/6"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Thermostat",
+            "services": [
+                {
+                    "name": "Living Room",
+                    "id": "Thermostat",
+                    "addresses": [
+                        "2/0/0",
+                        "2/0/1",
+                        "2/0/2",
+                        "2/0/3",
+                        "2/0/4"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Hal",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/5/9"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Storage",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/5/14"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Toilet",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/4/8"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Shower",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/4/9"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Bathroom",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/4/2"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Wardrobe",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/7/3"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Bed",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/7/8"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "LED",
+            "services": [
+                {
+                    "name": "Mirror",
+                    "id": "Lightbulb",
+                    "addresses": [
+                        "14/4/5"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Window Left",
+            "services": [
+                {
+                    "name": "Outlet",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/1/2"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Window Right",
+            "services": [
+                {
+                    "name": "Outlet",
+                    "id": "Outlet",
+                    "addresses": [
+                        "10/1/0"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Thermostat",
+            "services": [
+                {
+                    "name": "Bathroom",
+                    "id": "Thermostat",
+                    "addresses": [
+                        "2/1/0",
+                        "2/1/1",
+                        "2/1/2",
+                        "2/1/3",
+                        "2/1/4"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Thermostat",
+            "services": [
+                {
+                    "name": "Bedroom",
+                    "id": "Thermostat",
+                    "addresses": [
+                        "2/2/0",
+                        "2/2/1",
+                        "2/2/2",
+                        "2/2/3",
+                        "2/2/4"
+                    ]
+                }
+            ]
+        }
+    ],
+    "platform": "KNX Bridge"
+}
