@@ -1,6 +1,6 @@
 {
   "name": "homebridge-knx-eib",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "KNX support plugin for Homebridge",
   "main": "dist/index.js",
   "scripts": {

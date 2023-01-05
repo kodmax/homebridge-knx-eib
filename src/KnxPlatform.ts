@@ -13,9 +13,13 @@ class KnxPlatform implements DynamicPlatformPlugin {
     private config: KnxPlatformConfig
 
     private async connect (): Promise<KnxLink> {
-        const link = await KnxLink.connect(this.config.knxIpGatewayIp)
+        const link = await KnxLink.connect(this.config.knxIpGatewayIp, {
+            maxConcurrentMessages: this.config.maxConcurrentMessages ?? 16,
+            maxTelegramsPerSecond: this.config.maxTelegramsPerSecond ?? 24,
+            readTimeout: this.config.readTimeout ?? 10000
+        })
 
-        this.logger.debug(`KNX IP gateway ${this.config.knxIpGatewayIp} connection established.`)
+        this.logger.info(`KNX IP gateway ${this.config.knxIpGatewayIp} connection established.`)
 
         this.api.on(APIEvent.SHUTDOWN, async () => {
             await link.disconnect()

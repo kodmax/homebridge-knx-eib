@@ -12,6 +12,23 @@
         },
         {
             "type": "section",
+            "title": "Gateway Speed",
+            "expandable": true,
+            "expanded": false,
+            "items": [
+                {
+                    "key": "maxConcurrentMessages"
+                },
+                {
+                    "key": "maxTelegramsPerSecond"
+                },
+                {
+                    "key": "readTimeout"
+                }
+            ]
+        },
+        {
+            "type": "section",
             "title": "Accessories",
             "expandable": true,
             "expanded": false,
@@ -90,6 +107,24 @@
                 "title": "KNX/IP Gateway IP",
                 "required": true,
                 "type": "string"
+            },
+            "maxConcurrentMessages": {
+                "title": "Maximum number of KNX telegrams to send before waiting for ACK",
+                "required": false,
+                "default": 16,
+                "type": "number"
+            },
+            "maxTelegramsPerSecond": {
+                "title": "Maximum number of KNX telegrams to send per second",
+                "required": false,
+                "default": 24,
+                "type": "number"
+            },
+            "readTimeout": {
+                "title": "Maximum number of miliseconds to wait for a response to value read request",
+                "required": false,
+                "default": 10000,
+                "type": "number"
             },
             "accessories": {
                 "type": "array",

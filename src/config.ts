@@ -14,7 +14,11 @@ type KnxAccessoryConfig = {
 
 interface KnxPlatformConfig extends PlatformConfig {
     accessories: KnxAccessoryConfig[]
+
+    maxConcurrentMessages: number
+    maxTelegramsPerSecond: number
     knxIpGatewayIp: string
+    readTimeout: number
 }
 
 export type { KnxPlatformConfig, KnxAccessoryConfig, KnxServiceConfig }
