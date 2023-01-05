@@ -33,6 +33,7 @@
 |No|Characteristic|Function|Format|Notes|
 |--|--------------|--------|------|-----|
 |1 |CurrentRelativeHumidity|Get|F16||
+|2 |CurrentRelativeHumidity|Get|F32|Use with Tasmota KNX. Reads the value from F32 format.|
 
 
 ## Temperature Sensor

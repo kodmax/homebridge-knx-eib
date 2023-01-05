@@ -12,7 +12,7 @@ class HumiditySensor extends AbstractKnxService {
         super(api, knx, accessory, config)
 
         const service = this.getService(this.api.hap.Service.HumiditySensor)
-        addCurrentRelativeHumidityCharacteristic(api, service, knx, this.config.addresses[0])
+        addCurrentRelativeHumidityCharacteristic(api, service, knx, this.config.addresses[0], this.config.addresses[1])
     }
 }
 
