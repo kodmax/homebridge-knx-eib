@@ -1,10 +1,11 @@
 import { DPT_Value_Temp, KnxLink } from 'js-knx'
 import { API, Service } from 'homebridge'
 
-const addTargetTemperatureCharacteristic = (api: API, service: Service, knx: KnxLink, getTargetTempAddress: string, setTargetTempAddress: string): void => {
+const addTargetTemperatureCharacteristic = (api: API, service: Service, knx: KnxLink, options: string[], getTargetTempAddress: string, setTargetTempAddress: string): void => {
     const targetTemperature = service.getCharacteristic(api.hap.Characteristic.TargetTemperature)
     const get = knx.getDatapoint({ DataType: DPT_Value_Temp, address: getTargetTempAddress })
     const set = knx.getDatapoint({ DataType: DPT_Value_Temp, address: setTargetTempAddress })
+    const isAbsolute = options.find(opt => opt === 'absolute')
 
     get.addValueListener(reading => {
         targetTemperature.updateValue(reading.value)
@@ -15,8 +16,13 @@ const addTargetTemperatureCharacteristic = (api: API, service: Service, knx: Knx
     })
 
     targetTemperature.onSet(async temp => {
-        const current = (await get.read()).value
-        await set.write(+temp - current)
+        if (isAbsolute) {
+            await set.write(+temp)
+    
+        } else {
+            const current = (await get.read()).value
+            await set.write(+temp - current)
+        }
     })
 
 }

@@ -18,7 +18,7 @@ class Thermostat extends AbstractKnxService {
 
         const service = this.getService(this.api.hap.Service.Thermostat)
 
-        addTargetTemperatureCharacteristic(api, service, knx, config.addresses[0], config.addresses[1])
+        addTargetTemperatureCharacteristic(api, service, knx, config.options ?? [], config.addresses[0], config.addresses[1])
         addCurrentTemperatureCharacteristic(api, service, knx, config.addresses[2])
 
         addCurrentHeatingCoolingStateCharacteristic(api, service, knx, config.addresses[3], config.addresses[4])

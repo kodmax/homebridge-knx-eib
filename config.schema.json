@@ -73,6 +73,23 @@
                                                     ]
                                                 }
                                             ]
+                                        },
+                                        {
+                                            "key": "accessories[].services[].options",
+                                            "title": "Options",
+                                            "expandable": true,
+                                            "expanded": false,
+                                            "type": "section",
+                                            "items": [
+                                                {
+                                                    "type": "div",
+                                                    "items": [
+                                                        {
+                                                            "key": "accessories[].services[].options[]"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
                                         }
                                     ]
                                 }
@@ -206,6 +223,13 @@
                                         "items": {
                                             "pattern": "^[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]/[1-2]?[0-9]?[0-9]$",
                                             "title": "Group Address",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "options": {
+                                        "type": "array",
+                                        "items": {
+                                            "title": "Option",
                                             "type": "string"
                                         }
                                     }

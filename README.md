@@ -33,7 +33,9 @@
 |No|Characteristic|Function|Format|Notes|
 |--|--------------|--------|------|-----|
 |1 |CurrentRelativeHumidity|Get|F16||
-|2 |CurrentRelativeHumidity|Get|F32|Use with Tasmota KNX. Reads the value from F32 format.|
+
+Notes:
+- Add option "f32" to use F32 datatype (for Tasmota KNX)
 
 
 ## Temperature Sensor
@@ -54,6 +56,10 @@
 |3 |CurrentTemperature|Get|F16||
 |4 |CurrentHeatingCoolingState|Get|B1|Optional. Heating status indication|
 |5 |CurrentHeatingCoolingState|Get|B1|Optional. Cooling status indication|
+
+Notes:
+- Add "absolute" option to fix target temp setting issues on some Thermostats
+
 
 # Plugin Configuration
 ## Gateway speed

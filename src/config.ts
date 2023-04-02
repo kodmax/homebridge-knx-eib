@@ -4,6 +4,7 @@ import type { Service } from 'homebridge'
 type KnxServiceConfig = {
     id: Exclude<keyof typeof Service, 'prototype'>
     addresses: string[]
+    options: string[]
     name: string
 }
 
